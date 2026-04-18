@@ -122,17 +122,26 @@
             });
         }
 
-        function simular() {
-            const aprobadas = Array.from(document.querySelectorAll('#check-list input:checked')).map(i => i.value);
-            const habList = document.getElementById('hab-list');
-            habList.innerHTML = '';
-            const habilitadas = materias.filter(m => !aprobadas.includes(m.id) && (!m.corr || aprobadas.includes(m.corr)));
-            if(habilitadas.length === 0) {
-                habList.innerHTML = "<p style='color:#999; font-size:0.8rem;'>Tildá materias aprobadas...</p>";
-            } else {
-                habilitadas.forEach(m => {
-                    habList.innerHTML += `<div class="habilitada">🔹 ${m.nombre}</div>`;
-                });
+       function buscar() {
+            const txt = document.getElementById('busq').value.toLowerCase();
+            const res = document.getElementById('res-busq');
+            res.innerHTML = '';
+            
+            if(txt.length < 2) return;
+
+            materias.filter(m => m.nombre.toLowerCase().includes(txt)).forEach(m => {
+                // Buscamos el nombre de la correlativa usando el ID (m.corr)
+                const correlativa = m.corr ? materias.find(c => c.id === m.corr) : null;
+                const textoCorr = correlativa ? correlativa.nombre : "Ninguna (Libre)";
+
+                res.innerHTML += `
+                    <div class="habilitada" style="margin-bottom: 8px;">
+                        <strong style="color:var(--azul-p);">${m.nombre}</strong><br>
+                        <small style="color:#666;">📅 ${m.anio}</small><br>
+                        <small style="color:var(--azul-c); font-weight:bold;">🔗 Correlativa: ${textoCorr}</small>
+                    </div>`;
+            });
+        }
             }
         }
 
