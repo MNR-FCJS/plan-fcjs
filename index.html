@@ -3,66 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FCJS Play | MNR</title>
+    <title>MNR - Plan Virtual FCJS</title>
     <style>
-        :root { --azul-p: #003366; --azul-c: #0056b3; --blanco: #fff; --fondo: #f0f5fa; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; background: var(--fondo); display: flex; justify-content: center; }
-        .container { max-width: 450px; width: 100%; background: var(--blanco); padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e1e8ed; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .mnr-logo { width: 80px; height: 80px; background: var(--azul-p); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: 4px solid var(--blanco); box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: 10px; }
-        h1 { color: var(--azul-p); margin: 0; font-size: 1.6rem; }
-        .sub { color: var(--azul-c); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; }
-        .btn { background: var(--azul-p); color: white; border: none; padding: 16px; width: 100%; border-radius: 15px; font-weight: bold; margin-bottom: 10px; cursor: pointer; transition: 0.2s; font-size: 1rem; }
-        .btn:active { transform: scale(0.98); }
-        .seccion { display: none; margin-top: 15px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #e1e8ed; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        #check-list { max-height: 250px; overflow-y: auto; background: #fafafa; border-radius: 12px; padding: 10px; border: 1px solid #eee; }
-        .materia-check { background: white; padding: 10px; margin-bottom: 5px; border-radius: 8px; border: 1px solid #eee; display: flex; align-items: center; font-size: 0.85rem; cursor: pointer; }
-        .materia-check input { margin-right: 12px; width: 18px; height: 18px; }
-        .habilitada { background: #e3f2fd; color: var(--azul-p); padding: 12px; border-radius: 10px; margin-top: 5px; border-left: 5px solid var(--azul-c); font-size: 0.8rem; font-weight: bold; }
-        input[type="text"], textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 10px; font-size: 1rem; }
-        .footer { text-align: center; margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; text-align: center; }
+        h1 { color: #d32f2f; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; max-width: 1000px; margin: 20px auto; }
+        .materia { background: white; padding: 15px; border-radius: 8px; border: 2px solid #ccc; cursor: pointer; transition: 0.3s; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+        .materia:hover { transform: scale(1.05); }
+        .aprobada { background-color: #4caf50 !important; color: white; border-color: #388e3c; }
+        .bloqueada { background-color: #f44336 !important; color: white; border-color: #d32f2f; }
+        .anio-tag { font-size: 0.8em; color: #666; display: block; margin-bottom: 5px; }
+        .instrucciones { background: #fff; padding: 10px; border-radius: 5px; max-width: 600px; margin: 0 auto 20px; font-size: 0.9em; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="mnr-logo">
-                <svg width="50" height="50" viewBox="0 0 100 100"><text x="50%" y="65%" text-anchor="middle" fill="white" font-family="Arial" font-weight="900" font-size="32">MNR</text></svg>
-            </div>
-            <h1>⚖️ FCJS Play</h1>
-            <div class="sub">Mesa Directiva</div>
-        </div>
 
-        <button class="btn" onclick="toggle('buscador')">🔍 BUSCADOR DE MATERIAS</button>
-        <div id="buscador" class="seccion">
-            <input type="text" id="busq" placeholder="Escribí para buscar..." onkeyup="buscar()">
-            <div id="res-busq"></div>
-        </div>
-
-        <button class="btn" style="background:#0056b3;" onclick="toggle('simulador')">🎓 SIMULADOR DE CURSADA</button>
-        <div id="simulador" class="seccion">
-            <p style="font-size:0.8rem; font-weight:bold; color:var(--azul-p);">MARCÁ TUS APROBADAS:</p>
-            <div id="check-list"></div>
-            <p style="margin-top:15px; font-weight:bold; color:var(--azul-c);">ESTÁS HABILITADO PARA:</p>
-            <div id="hab-list"></div>
-        </div>
-
-        <button class="btn" style="background:#f39c12;" onclick="toggle('promedio')">📊 CALCULAR PROMEDIO</button>
-        <div id="promedio" class="seccion">
-            <textarea id="notasInput" rows="2" placeholder="Pegá tus notas del SIU aquí..."></textarea>
-            <button class="btn" onclick="calcularPromedio()">CALCULAR</button>
-            <div id="resultado-promedio" style="text-align:center; font-size:1.5rem; font-weight:bold; margin-top:10px; color:var(--azul-p);"></div>
-        </div>
-
-        <div class="footer">
-            <div style="color:var(--azul-p); font-weight:800; font-size:1rem;">MESA DIRECTIVA MNR</div>
-            <div style="color:var(--azul-c); font-weight:700; font-size:0.8rem;">Reformismo en Acción</div>
-        </div>
+    <h1>Plan Virtual Interactiva - FCJS</h1>
+    <div class="instrucciones">
+        <strong>¿Cómo usarlo?</strong> Tocá las materias que ya rendiste. <br>
+        En <span style="color: #4caf50;">● Verde</span> verás lo que aprobaste y en <span style="color: #f44336;">● Rojo</span> lo que se te traba.
     </div>
 
+    <div class="grid" id="grid-materias"></div>
+
     <script>
-        // BASE DE DATOS LOCAL
         const materias = [
             // 1º AÑO
             { id: 'itd', nombre: "Introducción a la Teoría del Derecho", anio: 1, corr: null },
@@ -99,73 +63,42 @@
             { id: 'filo', nombre: "Filosofía del Derecho", anio: 5, corr: 'itd' }
         ];
 
-        // Se ejecuta apenas abre el archivo
-        window.onload = function() {
-            const lista = document.getElementById('check-list');
-            lista.innerHTML = '';
-            materias.sort((a, b) => a.anio.localeCompare(b.anio)).forEach(m => {
-                lista.innerHTML += `
-                    <label class="materia-check">
-                        <input type="checkbox" value="${m.id}" onchange="simular()"> 
-                        <span>${m.nombre} (${m.anio})</span>
-                    </label>`;
-            });
-            console.log("Sistema cargado.");
-        };
+        let aprobadas = [];
 
-        function toggle(id) {
-            const el = document.getElementById(id);
-            const visible = el.style.display === 'block';
-            document.querySelectorAll('.seccion').forEach(s => s.style.display = 'none');
-            el.style.display = visible ? 'none' : 'block';
-        }
+        function render() {
+            const container = document.getElementById('grid-materias');
+            container.innerHTML = '';
 
-        function buscar() {
-            const txt = document.getElementById('busq').value.toLowerCase();
-            const res = document.getElementById('res-busq');
-            res.innerHTML = '';
-            if(txt.length < 2) return;
+            materias.forEach(m => {
+                const div = document.createElement('div');
+                div.classList.add('materia');
+                div.innerHTML = `<span class="anio-tag">${m.anio}º Año</span> ${m.nombre}`;
 
-            materias.filter(m => m.nombre.toLowerCase().includes(txt)).forEach(m => {
-                const corr = m.correlativaDe ? materias.find(d => d.id === m.correlativaDe) : null;
-                res.innerHTML += `
-                    <div style="padding:10px; background:#e3f2fd; border-radius:8px; margin-bottom:5px; border-left:4px solid var(--azul-c);">
-                        <strong style="color:var(--azul-p);">${m.nombre}</strong><br>
-                        <small>📅 ${m.anio} | 🔗 Correlativa: ${corr ? corr.nombre : 'Ninguna'}</small>
-                    </div>`;
+                // Si está aprobada
+                if (aprobadas.includes(m.id)) {
+                    div.classList.add('aprobada');
+                }
+
+                // Si la correlativa NO está aprobada (y tiene una)
+                if (m.corr && !aprobadas.includes(m.corr)) {
+                    div.classList.add('bloqueada');
+                }
+
+                div.onclick = () => toggler(m.id);
+                container.appendChild(div);
             });
         }
 
-        function simular() {
-            const aprobadas = Array.from(document.querySelectorAll('#check-list input:checked')).map(i => i.value);
-            const habList = document.getElementById('hab-list');
-            habList.innerHTML = '';
-            
-            const habilitadas = materias.filter(m => 
-                !aprobadas.includes(m.id) && 
-                (!m.correlativaDe || aprobadas.includes(m.correlativaDe))
-            );
-
-            if(habilitadas.length === 0) {
-                habList.innerHTML = "<p style='color:#999; font-size:0.8rem;'>Tildá materias aprobadas...</p>";
+        function toggler(id) {
+            if (aprobadas.includes(id)) {
+                aprobadas = aprobadas.filter(m => m !== id);
             } else {
-                habilitadas.forEach(m => {
-                    habList.innerHTML += `<div class="habilitada">🔹 ${m.nombre}</div>`;
-                });
+                aprobadas.push(id);
             }
+            render();
         }
 
-        function calcularPromedio() {
-            const raw = document.getElementById('notasInput').value;
-            const notas = raw.match(/\b([1-9]|10)\b/g);
-            const resDiv = document.getElementById('resultado-promedio');
-            if(notas) {
-                const suma = notas.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
-                resDiv.innerHTML = `Promedio: ${(suma / notas.length).toFixed(2)} 🎓`;
-            } else {
-                resDiv.innerHTML = "<span style='font-size:0.8rem; color:red;'>Ingresá notas válidas</span>";
-            }
-        }
+        render();
     </script>
 </body>
 </html>
