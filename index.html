@@ -3,161 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MNR - Plan Virtual FCJS</title>
+    <title>MNR - App Académica</title>
     <style>
         :root {
             --primary: #d32f2f;
-            --sidebar-bg: #ffffff;
-            --main-bg: #f8f9fa;
+            --bg-sidebar: #f0f2f5;
+            --bg-main: #ffffff;
+            --text-main: #1c1e21;
         }
 
         body { 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             margin: 0; 
             display: flex; 
             height: 100vh; 
-            background-color: var(--main-bg);
-            color: #333;
+            background-color: var(--bg-main);
+            color: var(--text-main);
         }
 
-        /* Panel Izquierdo (Estilo Chat/Sidebar) */
+        /* PANEL IZQUIERDO (TIPO CHAT) */
         .sidebar {
-            width: 280px;
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid #e0e0e0;
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid #ddd;
             display: flex;
             flex-direction: column;
+            transition: all 0.3s;
+        }
+
+        .sidebar.hidden { transform: translateX(-300px); width: 0; overflow: hidden; }
+
+        .sidebar-header {
             padding: 20px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-            z-index: 10;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .sidebar h1 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
+        .sidebar-content { padding: 20px; font-size: 0.95rem; line-height: 1.4; }
+
+        /* CONTENIDO PRINCIPAL */
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        .info-box {
-            background: #fff5f5;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            border-left: 4px solid var(--primary);
+        .top-bar {
+            padding: 15px 25px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        /* Contenedor Principal */
-        .main-content {
+        .menu-btn {
+            cursor: pointer;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: #555;
+        }
+
+        .grid-area {
             flex-grow: 1;
             overflow-y: auto;
-            padding: 40px;
+            padding: 30px;
+            background-color: #f9f9f9;
         }
 
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 20px; 
-            max-width: 1200px; 
-            margin: 0 auto; 
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+            gap: 15px; 
         }
 
-        /* Estilo de las materias */
+        /* TARJETAS DE MATERIAS */
         .materia { 
             background: white; 
-            padding: 20px; 
-            border-radius: 12px; 
+            padding: 16px; 
+            border-radius: 10px; 
             border: 1px solid #e0e0e0; 
             cursor: pointer; 
-            transition: all 0.2s ease; 
-            text-align: left;
-            position: relative;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .materia:hover { 
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        .materia:hover { border-color: var(--primary); background: #fff8f8; }
+
+        .materia.aprobada { 
+            background-color: #4caf50; 
+            color: white; 
+            border-color: #388e3c; 
         }
 
-        .aprobada { 
-            background-color: #e8f5e9 !important; 
-            border-color: #4caf50 !important; 
-            color: #2e7d32;
-        }
+        .anio-label { font-size: 0.75rem; color: #888; margin-bottom: 5px; }
+        .aprobada .anio-label { color: #e8f5e9; }
 
-        .bloqueada { 
-            background-color: #ffebee !important; 
-            border-color: #ef5350 !important; 
-            color: #c62828;
-        }
-
-        .anio-tag { 
-            font-size: 0.7rem; 
-            font-weight: bold;
-            text-transform: uppercase;
-            color: #999; 
-            margin-bottom: 8px; 
-            display: block;
-        }
-
-        /* Responsive para celulares */
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #e0e0e0; box-sizing: border-box; }
-            .main-content { padding: 20px; }
+            .sidebar { position: absolute; height: 100%; z-index: 100; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <h1>MNR FCJS</h1>
-        <div class="info-box">
-            <strong>Simulador de Correlativas</strong><br><br>
-            Seleccioná las materias que ya rendiste para ver tu camino.<br><br>
-            <span style="color: #4caf50;">● Verde:</span> Aprobada.<br>
-            <span style="color: #ef5350;">● Rojo:</span> Traba otra materia.
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span>Menú de Carrera</span>
+            <button onclick="toggleSidebar()" style="color:white; background:none; border:none; cursor:pointer">✕</button>
         </div>
-        <div style="margin-top: auto; font-size: 0.8rem; color: #999;">
-            Plan de Estudios 2018 <br> Universidad Nacional del Litoral
+        <div class="sidebar-content">
+            <p><strong>Bienvenido</strong></p>
+            <p>Este es el simulador interactivo para la FCJS. Podés marcar tus materias rendidas para organizar tu cuatrimestre.</p>
+            <hr style="border:0; border-top:1px solid #ccc">
+            <p style="font-size: 0.8rem; color: #666">Versión Prototipo v2.0</p>
         </div>
     </div>
 
-    <div class="main-content">
-        <div class="grid" id="grid-materias"></div>
+    <div class="main-container">
+        <div class="top-bar">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <span style="font-weight: bold; color: var(--primary)">MNR - Plan de Estudios</span>
+        </div>
+
+        <div class="grid-area">
+            <div class="grid" id="grid-materias"></div>
+        </div>
     </div>
 
     <script>
         const materias = [
-            { id: 'itd', nombre: "Introducción a la Teoría del Derecho", anio: 1, corr: null },
-            { id: 'dcon1', nombre: "Derecho Constitucional I", anio: 1, corr: null },
-            { id: 'hcs', nombre: "Historia Constitucional", anio: 1, corr: null },
-            { id: 'socio', nombre: "Sociología Jurídica", anio: 1, corr: null },
-            { id: 'pgen', nombre: "Derecho Penal I", anio: 1, corr: 'itd' },
-            { id: 'dpriv', nombre: "Fundamentos del Derecho Privado", anio: 1, corr: 'itd' },
-            { id: 'dcon2', nombre: "Derecho Constitucional II", anio: 2, corr: 'dcon1' },
-            { id: 'eco', nombre: "Economía Política", anio: 2, corr: 'hcs' },
-            { id: 'obli', nombre: "Derecho de las Obligaciones", anio: 2, corr: 'dpriv' },
-            { id: 'civil1', nombre: "Derecho Civil I", anio: 2, corr: 'dpriv' },
-            { id: 'pesp', nombre: "Derecho Penal II", anio: 3, corr: 'pgen' },
-            { id: 'cont', nombre: "Derecho de los Contratos", anio: 3, corr: 'obli' },
-            { id: 'civil2', nombre: "Derecho Civil II", anio: 3, corr: 'civil1' },
-            { id: 'reales', nombre: "Derecho de los Reales", anio: 3, corr: 'civil1' },
-            { id: 'proc1', nombre: "Derecho Procesal I", anio: 3, corr: 'obli' },
-            { id: 'da1', nombre: "Derecho Administrativo I", anio: 4, corr: 'dcon2' },
-            { id: 'comercial', nombre: "Derecho Comercial", anio: 4, corr: 'cont' },
-            { id: 'laboral', nombre: "Derecho del Trabajo", anio: 4, corr: 'cont' },
-            { id: 'danios', nombre: "Derecho de Daños", anio: 4, corr: 'obli' },
-            { id: 'proc2', nombre: "Derecho Procesal II", anio: 4, corr: 'proc1' },
-            { id: 'da2', nombre: "Derecho Administrativo II", anio: 5, corr: 'da1' },
-            { id: 'concursos', nombre: "Derecho de Concursos", anio: 5, corr: 'comercial' },
-            { id: 'internacional', nombre: "Derecho Internacional", anio: 5, corr: 'da1' },
-            { id: 'filo', nombre: "Filosofía del Derecho", anio: 5, corr: 'itd' }
+            { id: 'itd', nombre: "Introducción a la Teoría del Derecho", anio: 1 },
+            { id: 'dcon1', nombre: "Derecho Constitucional I", anio: 1 },
+            { id: 'hcs', nombre: "Historia Constitucional", anio: 1 },
+            { id: 'socio', nombre: "Sociología Jurídica", anio: 1 },
+            { id: 'pgen', nombre: "Derecho Penal I", anio: 1 },
+            { id: 'dpriv', nombre: "Fundamentos del Derecho Privado", anio: 1 },
+            { id: 'dcon2', nombre: "Derecho Constitucional II", anio: 2 },
+            { id: 'eco', nombre: "Economía Política", anio: 2 },
+            { id: 'obli', nombre: "Derecho de las Obligaciones", anio: 2 },
+            { id: 'civil1', nombre: "Derecho Civil I", anio: 2 },
+            { id: 'pesp', nombre: "Derecho Penal II", anio: 3 },
+            { id: 'cont', nombre: "Derecho de los Contratos", anio: 3 },
+            { id: 'civil2', nombre: "Derecho Civil II", anio: 3 },
+            { id: 'reales', nombre: "Derecho de los Reales", anio: 3 },
+            { id: 'proc1', nombre: "Derecho Procesal I", anio: 3 },
+            { id: 'da1', nombre: "Derecho Administrativo I", anio: 4 },
+            { id: 'comercial', nombre: "Derecho Comercial", anio: 4 },
+            { id: 'laboral', nombre: "Derecho del Trabajo", anio: 4 },
+            { id: 'danios', nombre: "Derecho de Daños", anio: 4 },
+            { id: 'proc2', nombre: "Derecho Procesal II", anio: 4 }
         ];
 
         let aprobadas = [];
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('hidden');
+        }
 
         function render() {
             const container = document.getElementById('grid-materias');
@@ -166,31 +175,27 @@
             materias.forEach(m => {
                 const div = document.createElement('div');
                 div.classList.add('materia');
-                
-                // Lógica de colores
-                if (aprobadas.includes(m.id)) {
-                    div.classList.add('aprobada');
-                }
-                if (m.corr && !aprobadas.includes(m.corr)) {
-                    div.classList.add('bloqueada');
-                }
+                if (aprobadas.includes(m.id)) div.classList.add('aprobada');
 
-                div.innerHTML = `<span class="anio-tag">${m.anio}º Año</span> <strong>${m.nombre}</strong>`;
-                div.onclick = () => toggler(m.id);
+                div.innerHTML = `
+                    <div>
+                        <span class="anio-label">${m.anio}º AÑO</span><br>
+                        <strong>${m.nombre}</strong>
+                    </div>
+                `;
+                div.onclick = () => {
+                    if (aprobadas.includes(m.id)) {
+                        aprobadas = aprobadas.filter(a => a !== m.id);
+                    } else {
+                        aprobadas.push(m.id);
+                    }
+                    render();
+                };
                 container.appendChild(div);
             });
         }
 
-        function toggler(id) {
-            if (aprobadas.includes(id)) {
-                aprobadas = aprobadas.filter(m => m !== id);
-            } else {
-                aprobadas.push(id);
-            }
-            render();
-        }
-
-            render();
+        render();
     </script>
 </body>
 </html>
