@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FCJS PLAN DE ESTUDIO | MNR</title>
+    <title>FCJS Play | MNR</title>
     <style>
         :root { --azul-p: #003366; --azul-c: #0056b3; --blanco: #fff; --fondo: #f0f5fa; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; background: var(--fondo); display: flex; justify-content: center; }
@@ -16,7 +16,7 @@
         .btn:active { transform: scale(0.98); }
         .seccion { display: none; margin-top: 15px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #e1e8ed; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        #check-list { max-height: 300px; overflow-y: auto; background: #fafafa; border-radius: 12px; padding: 10px; border: 1px solid #eee; }
+        #check-list { max-height: 250px; overflow-y: auto; background: #fafafa; border-radius: 12px; padding: 10px; border: 1px solid #eee; }
         .materia-check { background: white; padding: 10px; margin-bottom: 5px; border-radius: 8px; border: 1px solid #eee; display: flex; align-items: center; font-size: 0.85rem; cursor: pointer; text-align: left; }
         .materia-check input { margin-right: 12px; width: 18px; height: 18px; }
         .habilitada { background: #e3f2fd; color: var(--azul-p); padding: 12px; border-radius: 10px; margin-top: 5px; border-left: 5px solid var(--azul-c); font-size: 0.8rem; font-weight: bold; text-align: left; }
@@ -63,25 +63,19 @@
 
     <script>
         const materias = [
-            // 1º AÑO
             { id: 'itd', nombre: "Introducción a la Teoría del Derecho", anio: "1º Año", corr: null },
             { id: 'dcon1', nombre: "Derecho Constitucional I", anio: "1º Año", corr: null },
             { id: 'hcs', nombre: "Historia Constitucional", anio: "1º Año", corr: null },
             { id: 'socio', nombre: "Sociología Jurídica", anio: "1º Año", corr: null },
             { id: 'dpriv', nombre: "Fundamentos del Derecho Privado", anio: "1º Año", corr: 'itd' },
             { id: 'pgen', nombre: "Derecho Penal I", anio: "1º Año", corr: 'itd' },
-            // 2º AÑO
             { id: 'dcon2', nombre: "Derecho Constitucional II", anio: "2º Año", corr: 'dcon1' },
             { id: 'obli', nombre: "Derecho de las Obligaciones", anio: "2º Año", corr: 'dpriv' },
             { id: 'civil1', nombre: "Derecho Civil I (Patrimonial)", anio: "2º Año", corr: 'dpriv' },
             { id: 'eco', nombre: "Economía Política", anio: "2º Año", corr: null },
-            // 3º AÑO
             { id: 'cont', nombre: "Derecho de los Contratos", anio: "3º Año", corr: 'obli' },
             { id: 'pesp', nombre: "Derecho Penal II", anio: "3º Año", corr: 'pgen' },
             { id: 'proc1', nombre: "Derecho Procesal I", anio: "3º Año", corr: 'obli' },
-            { id: 'familia', nombre: "Derecho Civil II (Familia)", anio: "3º Año", corr: 'civil1' },
-            { id: 'reales', nombre: "Derecho de los Reales", anio: "3º Año", corr: 'civil1' },
-            // 4º AÑO
             { id: 'da1', nombre: "Derecho Administrativo I", anio: "4º Año", corr: 'dcon2' },
             { id: 'comercial', nombre: "Derecho Comercial", anio: "4º Año", corr: 'cont' },
             { id: 'laboral', nombre: "Derecho del Trabajo", anio: "4º Año", corr: 'cont' },
@@ -103,26 +97,18 @@
 
         function toggle(id) {
             const el = document.getElementById(id);
-            const visible = el.style.display === 'block';
+            const seccionYaAbierta = (el.style.display === 'block');
+            
+            // Cerramos todas
             document.querySelectorAll('.seccion').forEach(s => s.style.display = 'none');
-            el.style.display = visible ? 'none' : 'block';
+            
+            // Si no estaba abierta, la abrimos
+            if (!seccionYaAbierta) {
+                el.style.display = 'block';
+            }
         }
 
         function buscar() {
-            const txt = document.getElementById('busq').value.toLowerCase();
-            const res = document.getElementById('res-busq');
-            res.innerHTML = '';
-            if(txt.length < 2) return;
-            materias.filter(m => m.nombre.toLowerCase().includes(txt)).forEach(m => {
-                res.innerHTML += `
-                    <div class="habilitada">
-                        <strong>${m.nombre}</strong><br>
-                        <small>${m.anio}</small>
-                    </div>`;
-            });
-        }
-
-       function buscar() {
             const txt = document.getElementById('busq').value.toLowerCase();
             const res = document.getElementById('res-busq');
             res.innerHTML = '';
@@ -130,7 +116,6 @@
             if(txt.length < 2) return;
 
             materias.filter(m => m.nombre.toLowerCase().includes(txt)).forEach(m => {
-                // Buscamos el nombre de la correlativa usando el ID (m.corr)
                 const correlativa = m.corr ? materias.find(c => c.id === m.corr) : null;
                 const textoCorr = correlativa ? correlativa.nombre : "Ninguna (Libre)";
 
@@ -142,6 +127,23 @@
                     </div>`;
             });
         }
+
+        function simular() {
+            const aprobadas = Array.from(document.querySelectorAll('#check-list input:checked')).map(i => i.value);
+            const habList = document.getElementById('hab-list');
+            habList.innerHTML = '';
+            
+            const habilitadas = materias.filter(m => 
+                !aprobadas.includes(m.id) && 
+                (!m.corr || aprobadas.includes(m.corr))
+            );
+
+            if(habilitadas.length === 0) {
+                habList.innerHTML = "<p style='color:#999; font-size:0.8rem;'>Tildá materias aprobadas...</p>";
+            } else {
+                habilitadas.forEach(m => {
+                    habList.innerHTML += `<div class="habilitada">🔹 ${m.nombre}</div>`;
+                });
             }
         }
 
