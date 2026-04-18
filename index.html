@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FCJS Play | MNR</title>
+    <title>FCJS PLAN DE ESTUDIO | MNR</title>
     <style>
         :root { --azul-p: #003366; --azul-c: #0056b3; --blanco: #fff; --fondo: #f0f5fa; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; background: var(--fondo); display: flex; justify-content: center; }
@@ -16,10 +16,10 @@
         .btn:active { transform: scale(0.98); }
         .seccion { display: none; margin-top: 15px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #e1e8ed; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        #check-list { max-height: 250px; overflow-y: auto; background: #fafafa; border-radius: 12px; padding: 10px; border: 1px solid #eee; }
-        .materia-check { background: white; padding: 10px; margin-bottom: 5px; border-radius: 8px; border: 1px solid #eee; display: flex; align-items: center; font-size: 0.85rem; cursor: pointer; }
+        #check-list { max-height: 300px; overflow-y: auto; background: #fafafa; border-radius: 12px; padding: 10px; border: 1px solid #eee; }
+        .materia-check { background: white; padding: 10px; margin-bottom: 5px; border-radius: 8px; border: 1px solid #eee; display: flex; align-items: center; font-size: 0.85rem; cursor: pointer; text-align: left; }
         .materia-check input { margin-right: 12px; width: 18px; height: 18px; }
-        .habilitada { background: #e3f2fd; color: var(--azul-p); padding: 12px; border-radius: 10px; margin-top: 5px; border-left: 5px solid var(--azul-c); font-size: 0.8rem; font-weight: bold; }
+        .habilitada { background: #e3f2fd; color: var(--azul-p); padding: 12px; border-radius: 10px; margin-top: 5px; border-left: 5px solid var(--azul-c); font-size: 0.8rem; font-weight: bold; text-align: left; }
         input[type="text"], textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 10px; font-size: 1rem; }
         .footer { text-align: center; margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; }
     </style>
@@ -48,7 +48,7 @@
             <div id="hab-list"></div>
         </div>
 
-        <button class="btn" style="background:#f39c12;" onclick="toggle('promedio')">📊 CALCULAR PROMEDIO</button>
+        <button class="btn" style="background:#28a745;" onclick="toggle('promedio')">📊 CALCULAR PROMEDIO</button>
         <div id="promedio" class="seccion">
             <textarea id="notasInput" rows="2" placeholder="Pegá tus notas del SIU aquí..."></textarea>
             <button class="btn" onclick="calcularPromedio()">CALCULAR</button>
@@ -62,40 +62,43 @@
     </div>
 
     <script>
-        // BASE DE DATOS LOCAL
         const materias = [
-            { id: 'itd', nombre: "Introducción a la Teoría del Derecho", anio: "1º Año", correlativaDe: null },
-            { id: 'dcon1', nombre: "Derecho Constitucional I", anio: "1º Año", correlativaDe: null },
-            { id: 'hcs', nombre: "Historia Constitucional", anio: "1º Año", correlativaDe: null },
-            { id: 'socio', nombre: "Sociología Jurídica", anio: "1º Año", correlativaDe: null },
-            { id: 'dpriv', nombre: "Fundamentos del Derecho Privado", anio: "1º Año", correlativaDe: 'itd' },
-            { id: 'pgen', nombre: "Derecho Penal I (Parte General)", anio: "1º Año", correlativaDe: 'itd' },
-            { id: 'dcon2', nombre: "Derecho Constitucional II", anio: "2º Año", correlativaDe: 'dcon1' },
-            { id: 'obli', nombre: "Derecho de las Obligaciones", anio: "2º Año", correlativaDe: 'dpriv' },
-            { id: 'civil1', nombre: "Derecho Civil I (Patrimonial)", anio: "2º Año", correlativaDe: 'dpriv' },
-            { id: 'eco', nombre: "Economía Política", anio: "2º Año", correlativaDe: null },
-            { id: 'cont', nombre: "Derecho de los Contratos", anio: "3º Año", correlativaDe: 'obli' },
-            { id: 'pesp', nombre: "Derecho Penal II (Especial)", anio: "3º Año", correlativaDe: 'pgen' },
-            { id: 'da1', nombre: "Derecho Administrativo I", anio: "4º Año", correlativaDe: 'dcon2' },
-            { id: 'comercial', nombre: "Derecho Comercial (Sociedades)", anio: "4º Año", correlativaDe: 'cont' },
-            { id: 'laboral', nombre: "Derecho del Trabajo y Seg. Social", anio: "4º Año", correlativaDe: 'cont' },
-            { id: 'proc1', nombre: "Derecho Procesal I", anio: "3º Año", correlativaDe: 'obli' },
-            { id: 'familia', nombre: "Derecho de Familia", anio: "3º Año", correlativaDe: 'civil1' },
-            { id: 'reales', nombre: "Derecho de los Reales", anio: "3º Año", correlativaDe: 'civil1' }
+            // 1º AÑO
+            { id: 'itd', nombre: "Introducción a la Teoría del Derecho", anio: "1º Año", corr: null },
+            { id: 'dcon1', nombre: "Derecho Constitucional I", anio: "1º Año", corr: null },
+            { id: 'hcs', nombre: "Historia Constitucional", anio: "1º Año", corr: null },
+            { id: 'socio', nombre: "Sociología Jurídica", anio: "1º Año", corr: null },
+            { id: 'dpriv', nombre: "Fundamentos del Derecho Privado", anio: "1º Año", corr: 'itd' },
+            { id: 'pgen', nombre: "Derecho Penal I", anio: "1º Año", corr: 'itd' },
+            // 2º AÑO
+            { id: 'dcon2', nombre: "Derecho Constitucional II", anio: "2º Año", corr: 'dcon1' },
+            { id: 'obli', nombre: "Derecho de las Obligaciones", anio: "2º Año", corr: 'dpriv' },
+            { id: 'civil1', nombre: "Derecho Civil I (Patrimonial)", anio: "2º Año", corr: 'dpriv' },
+            { id: 'eco', nombre: "Economía Política", anio: "2º Año", corr: null },
+            // 3º AÑO
+            { id: 'cont', nombre: "Derecho de los Contratos", anio: "3º Año", corr: 'obli' },
+            { id: 'pesp', nombre: "Derecho Penal II", anio: "3º Año", corr: 'pgen' },
+            { id: 'proc1', nombre: "Derecho Procesal I", anio: "3º Año", corr: 'obli' },
+            { id: 'familia', nombre: "Derecho Civil II (Familia)", anio: "3º Año", corr: 'civil1' },
+            { id: 'reales', nombre: "Derecho de los Reales", anio: "3º Año", corr: 'civil1' },
+            // 4º AÑO
+            { id: 'da1', nombre: "Derecho Administrativo I", anio: "4º Año", corr: 'dcon2' },
+            { id: 'comercial', nombre: "Derecho Comercial", anio: "4º Año", corr: 'cont' },
+            { id: 'laboral', nombre: "Derecho del Trabajo", anio: "4º Año", corr: 'cont' },
+            { id: 'danios', nombre: "Derecho de Daños", anio: "4º Año", corr: 'obli' },
+            { id: 'proc2', nombre: "Derecho Procesal II", anio: "4º Año", corr: 'proc1' }
         ];
 
-        // Se ejecuta apenas abre el archivo
         window.onload = function() {
             const lista = document.getElementById('check-list');
             lista.innerHTML = '';
-            materias.sort((a, b) => a.anio.localeCompare(b.anio)).forEach(m => {
+            materias.forEach(m => {
                 lista.innerHTML += `
                     <label class="materia-check">
                         <input type="checkbox" value="${m.id}" onchange="simular()"> 
                         <span>${m.nombre} (${m.anio})</span>
                     </label>`;
             });
-            console.log("Sistema cargado.");
         };
 
         function toggle(id) {
@@ -110,13 +113,11 @@
             const res = document.getElementById('res-busq');
             res.innerHTML = '';
             if(txt.length < 2) return;
-
             materias.filter(m => m.nombre.toLowerCase().includes(txt)).forEach(m => {
-                const corr = m.correlativaDe ? materias.find(d => d.id === m.correlativaDe) : null;
                 res.innerHTML += `
-                    <div style="padding:10px; background:#e3f2fd; border-radius:8px; margin-bottom:5px; border-left:4px solid var(--azul-c);">
-                        <strong style="color:var(--azul-p);">${m.nombre}</strong><br>
-                        <small>📅 ${m.anio} | 🔗 Correlativa: ${corr ? corr.nombre : 'Ninguna'}</small>
+                    <div class="habilitada">
+                        <strong>${m.nombre}</strong><br>
+                        <small>${m.anio}</small>
                     </div>`;
             });
         }
@@ -125,12 +126,7 @@
             const aprobadas = Array.from(document.querySelectorAll('#check-list input:checked')).map(i => i.value);
             const habList = document.getElementById('hab-list');
             habList.innerHTML = '';
-            
-            const habilitadas = materias.filter(m => 
-                !aprobadas.includes(m.id) && 
-                (!m.correlativaDe || aprobadas.includes(m.correlativaDe))
-            );
-
+            const habilitadas = materias.filter(m => !aprobadas.includes(m.id) && (!m.corr || aprobadas.includes(m.corr)));
             if(habilitadas.length === 0) {
                 habList.innerHTML = "<p style='color:#999; font-size:0.8rem;'>Tildá materias aprobadas...</p>";
             } else {
