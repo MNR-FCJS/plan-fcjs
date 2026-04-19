@@ -23,6 +23,52 @@
         input[type="text"], textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 10px; font-size: 1rem; }
         .footer { text-align: center; margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; }
         .plan-container {
+            .plan-grid {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.columna {
+  flex: 1;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 10px;
+  border-top: 4px solid #003366;
+}
+
+.columna h3 {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #003366;
+  margin-bottom: 8px;
+}
+
+.materia-map {
+  background: white;
+  padding: 8px;
+  margin: 6px 0;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  font-size: 0.7rem;
+  cursor: pointer;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.materia-map:hover {
+  border-color: #0056b3;
+}
+
+.necesita {
+  background: #e74c3c;
+  color: white;
+}
+
+.habilita {
+  background: #2ecc71;
+  color: white;
+}
   position: relative;
   height: 350px;
   margin-top: 10px;
@@ -64,12 +110,43 @@
 </button>
         <div id="mapa" class="seccion">
 
-  <div class="plan-container">
+  <div class="plan-grid">
 
-    <div id="itd" class="materia-map">ITD</div>
+  <div class="columna">
+    <h3>1° Año</h3>
+    <div id="itd" class="materia-map">Teoría del Derecho</div>
+    <div id="dcon1" class="materia-map">Const. I</div>
+    <div id="hcs" class="materia-map">Historia</div>
+    <div id="socio" class="materia-map">Sociología</div>
     <div id="dpriv" class="materia-map">Privado</div>
-    <div id="obli" class="materia-map">Oblig.</div>
+    <div id="pgen" class="materia-map">Penal I</div>
+  </div>
+
+  <div class="columna">
+    <h3>2° Año</h3>
+    <div id="dcon2" class="materia-map">Const. II</div>
+    <div id="obli" class="materia-map">Obligaciones</div>
+    <div id="civil1" class="materia-map">Civil I</div>
+    <div id="eco" class="materia-map">Economía</div>
+  </div>
+
+  <div class="columna">
+    <h3>3° Año</h3>
     <div id="cont" class="materia-map">Contratos</div>
+    <div id="pesp" class="materia-map">Penal II</div>
+    <div id="proc1" class="materia-map">Procesal I</div>
+  </div>
+
+  <div class="columna">
+    <h3>4° Año</h3>
+    <div id="da1" class="materia-map">Admin I</div>
+    <div id="comercial" class="materia-map">Comercial</div>
+    <div id="laboral" class="materia-map">Laboral</div>
+    <div id="danios" class="materia-map">Daños</div>
+    <div id="proc2" class="materia-map">Procesal II</div>
+  </div>
+
+</div>
 
   </div>
 
