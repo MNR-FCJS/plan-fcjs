@@ -22,7 +22,33 @@
         .habilitada { background: #e3f2fd; color: var(--azul-p); padding: 12px; border-radius: 10px; margin-top: 5px; border-left: 5px solid var(--azul-c); font-size: 0.8rem; font-weight: bold; text-align: left; }
         input[type="text"], textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 10px; font-size: 1rem; }
         .footer { text-align: center; margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; }
+        .plan-container {
+  position: relative;
+  height: 350px;
+  margin-top: 10px;
+}
+
+.materia-map {
+  position: absolute;
+  background: white;
+  padding: 6px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+/* POSICIONES (las vas ajustando vos) */
+#itd { top: 20px; left: 10px; }
+#dpriv { top: 80px; left: 80px; }
+#obli { top: 150px; left: 160px; }
+#cont { top: 220px; left: 240px; }
+
+/* COLORES */
+.necesita { background: #e74c3c; color: white; }
+.habilita { background: #2ecc71; color: white; }
     </style>
+    
 </head>
 <body>
     <div class="container">
@@ -33,7 +59,21 @@
             <h1>⚖️ FCJS Play</h1>
             <div class="sub">Mesa Directiva</div>
         </div>
+<button class="btn" style="background:#2ecc71;" onclick="toggle('mapa')">
+🗺️ PLAN INTERACTIVO
+</button>
+        <div id="mapa" class="seccion">
 
+  <div class="plan-container">
+
+    <div id="itd" class="materia-map">ITD</div>
+    <div id="dpriv" class="materia-map">Privado</div>
+    <div id="obli" class="materia-map">Oblig.</div>
+    <div id="cont" class="materia-map">Contratos</div>
+
+  </div>
+
+</div>
         <button class="btn" onclick="toggle('buscador')">🔍 BUSCADOR DE MATERIAS</button>
         <div id="buscador" class="seccion">
             <input type="text" id="busq" placeholder="Escribí para buscar..." onkeyup="buscar()">
@@ -62,6 +102,30 @@
     </div>
 
     <script>
+        document.querySelectorAll('.materia-map').forEach(m => {
+  m.addEventListener('click', () => {
+
+    // limpiar
+    document.querySelectorAll('.materia-map').forEach(x => {
+      x.classList.remove('necesita', 'habilita');
+    });
+
+    const actual = materias.find(mat => mat.id === m.id);
+
+    // correlativa necesaria
+    if (actual?.corr) {
+      document.getElementById(actual.corr)?.classList.add('necesita');
+    }
+
+    // materias que habilita
+    materias.forEach(mat => {
+      if (mat.corr === m.id) {
+        document.getElementById(mat.id)?.classList.add('habilita');
+      }
+    });
+
+  });
+});
         const materias = [
             { id: 'itd', nombre: "Introducción a la Teoría del Derecho", anio: "1º Año", corr: null },
             { id: 'dcon1', nombre: "Derecho Constitucional I", anio: "1º Año", corr: null },
