@@ -30,17 +30,17 @@
             <div class="mnr-logo">
                 <svg width="50" height="50" viewBox="0 0 100 100"><text x="50%" y="65%" text-anchor="middle" fill="white" font-family="Arial" font-weight="900" font-size="32">MNR</text></svg>
             </div>
-            <h1>⚖️ FCJS Play</h1>
+            <h1> FCJS MNR</h1>
             <div class="sub">Mesa Directiva</div>
         </div>
 
-        <button class="btn" onclick="toggle('buscador')">🔍 BUSCADOR DE MATERIAS</button>
+        <button class="btn" onclick="toggle('buscador')"> BUSCADOR DE MATERIAS</button>
         <div id="buscador" class="seccion">
             <input type="text" id="busq" placeholder="Escribí para buscar..." onkeyup="buscar()">
             <div id="res-busq"></div>
         </div>
 
-        <button class="btn" style="background:#0056b3;" onclick="toggle('simulador')">🎓 SIMULADOR DE CURSADA</button>
+        <button class="btn" style="background:#0056b3;" onclick="toggle('simulador')"> SIMULADOR DE CURSADA</button>
         <div id="simulador" class="seccion">
             <p style="font-size:0.8rem; font-weight:bold; color:var(--azul-p);">MARCÁ TUS APROBADAS:</p>
             <div id="check-list"></div>
@@ -48,7 +48,7 @@
             <div id="hab-list"></div>
         </div>
 
-        <button class="btn" style="background:#28a745;" onclick="toggle('promedio')">📊 CALCULAR PROMEDIO</button>
+        <button class="btn" style="background:#28a745;" onclick="toggle('promedio')"> CALCULAR PROMEDIO</button>
         <div id="promedio" class="seccion">
             <textarea id="notasInput" rows="2" placeholder="Pegá tus notas del SIU aquí..."></textarea>
             <button class="btn" onclick="calcularPromedio()">CALCULAR</button>
@@ -63,15 +63,14 @@
 
     <script>
         const materias = [
-            { id: 'itd', nombre: "Introducción a la Teoría del Derecho", anio: "1º Año", corr: null },
+            { id: 'itd', nombre: " Teoría del Derecho", anio: "1º Año", corr: null },
             { id: 'dcon1', nombre: "Derecho Constitucional I", anio: "1º Año", corr: null },
             { id: 'hcs', nombre: "Historia Constitucional", anio: "1º Año", corr: null },
-            { id: 'socio', nombre: "Sociología Jurídica", anio: "1º Año", corr: null },
-            { id: 'dpriv', nombre: "Fundamentos del Derecho Privado", anio: "1º Año", corr: 'itd' },
+            { id: 'socio', nombre: "Sociología", anio: "1º Año", corr: null },
+            { id: 'dpriv', nombre: "Fundamentos del Derecho Privado", anio: "1º Año", corr: 'td' },
             { id: 'pgen', nombre: "Derecho Penal I", anio: "1º Año", corr: 'itd' },
             { id: 'dcon2', nombre: "Derecho Constitucional II", anio: "2º Año", corr: 'dcon1' },
             { id: 'obli', nombre: "Derecho de las Obligaciones", anio: "2º Año", corr: 'dpriv' },
-            { id: 'civil1', nombre: "Derecho Civil I (Patrimonial)", anio: "2º Año", corr: 'dpriv' },
             { id: 'eco', nombre: "Economía Política", anio: "2º Año", corr: null },
             { id: 'cont', nombre: "Derecho de los Contratos", anio: "3º Año", corr: 'obli' },
             { id: 'pesp', nombre: "Derecho Penal II", anio: "3º Año", corr: 'pgen' },
