@@ -1,23 +1,20 @@
 {
   "name": "FCJS MNR Portal",
   "short_name": "MNR Portal",
-  "description": "Herramientas académicas para estudiantes de la FCJS",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#003366",
   "theme_color": "#003366",
   "icons": [
     {
-      "src": "foto.png",
+      "src": "mnrpng.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "foto.png",
+      "src": "mnrpng.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
