@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FCJS MNR | Portal</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#003366">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="foto.png">
+
     <style>
         :root { --azul-p: #003366; --azul-c: #1a4b8c; --blanco: #fff; --fondo: #e9eff5; --verde: #28a745; --rojo: #d32f2f; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--fondo); color: #333; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--fondo); color: #333; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
         /* PUBLICIDAD AL INICIO */
         .ads-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: flex; align-items: center; justify-content: center; }
@@ -16,23 +23,26 @@
 
         /* Pantalla de Inicio */
         .home-screen { padding: 20px; max-width: 450px; margin: auto; text-align: center; background: white; min-height: 100vh; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .header { margin-top: 20px; margin-bottom: 20px; }
-        .mnr-logo { width: 75px; height: 75px; background: var(--azul-p); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; border: 3px solid #fff; }
+        .header { margin-top: 10px; margin-bottom: 20px; }
+        .mnr-logo { width: 70px; height: 70px; background: var(--azul-p); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
         /* Dashboard */
         .dashboard { background: linear-gradient(135deg, #004080, #0056b3); color: white; padding: 25px; border-radius: 20px; margin-bottom: 20px; text-align: left; }
         .dash-flex { display: flex; justify-content: space-between; align-items: center; }
         .pct-txt { font-size: 3rem; font-weight: 900; }
         .bar-bg { background: rgba(255,255,255,0.2); height: 12px; border-radius: 10px; margin-top: 15px; overflow: hidden; }
-        .bar-fill { background: white; height: 100%; width: 0%; transition: 1s ease; }
+        .bar-fill { background: white; height: 100%; width: 0%; transition: 1.5s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
 
         /* Botones Redes */
-        .social-row { display: flex; gap: 10px; margin-bottom: 20px; }
-        .btn-social { flex: 1; padding: 12px; border-radius: 15px; color: white; text-decoration: none; font-size: 0.75rem; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .social-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .btn-social { flex: 1; padding: 12px; border-radius: 15px; color: white; text-decoration: none; font-size: 0.75rem; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; transition: 0.2s; }
+        .btn-social:active { transform: scale(0.95); }
         .btn-ig-mnr { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); }
         .btn-ig-ing { background: linear-gradient(45deg, #f09433, #e66465, #9198e5); }
 
-        .btn-action { background: var(--azul-p); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-bottom: 10px; display: block; }
+        /* Botones Acción */
+        .btn-action { background: var(--azul-p); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-bottom: 10px; display: block; transition: 0.2s; text-decoration: none; text-align: center; box-sizing: border-box; }
+        .btn-action:active { transform: scale(0.98); filter: brightness(1.1); }
 
         /* Pantallas Secundarias */
         .tool-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--fondo); z-index: 100; overflow-y: auto; padding: 20px; box-sizing: border-box; }
@@ -57,52 +67,55 @@
     <div id="ads" class="ads-overlay" onclick="closeAds()">
         <div class="ads-content" onclick="event.stopPropagation()">
             <div class="close-ads" onclick="closeAds()">X</div>
-            <img src="publicidad.png" alt="4to Turno">
+            <img src="publicidad.png" alt="Publicidad">
         </div>
     </div>
 
     <div id="home" class="home-screen">
         <div class="header">
             <div class="mnr-logo">
-                <svg width="45" height="45" viewBox="0 0 100 100"><text x="50%" y="65%" text-anchor="middle" fill="white" font-family="Arial" font-weight="900" font-size="30">MNR</text></svg>
+                <svg width="40" height="40" viewBox="0 0 100 100"><text x="50%" y="65%" text-anchor="middle" fill="white" font-family="Arial" font-weight="900" font-size="30">MNR</text></svg>
             </div>
             <h2 style="margin:0; color: var(--azul-p);">FCJS MNR</h2>
+            <span style="font-size: 0.7rem; color: #777;">PORTAL DE HERRAMIENTAS</span>
         </div>
 
         <div class="dashboard">
             <div class="dash-flex">
                 <div class="pct-txt"><span id="pct-num">0</span>%</div>
-                <div style="text-align:right"><b><span id="count-num">0</span> / 38</b><br>CARRERA</div>
+                <div style="text-align:right"><b><span id="count-num">0</span> / 38</b><br>TU CARRERA</div>
             </div>
             <div class="bar-bg"><div id="bar-fill" class="bar-fill"></div></div>
         </div>
 
         <div class="social-row">
             <a href="https://www.instagram.com/mnrfcjs/" target="_blank" class="btn-social btn-ig-mnr">📸 @mnrfcjs</a>
-            <a href="https://www.instagram.com/ingresofcjs26/" target="_blank" class="btn-social btn-ig-ing">📸 Ingreso 2026</a>
+            <a href="https://www.instagram.com/ingresofcjs26/" target="_blank" class="btn-social btn-ig-ing">📸 Ingreso '26</a>
         </div>
 
         <button class="btn-action" onclick="openTool('simulador')">ARMÁ TU CUATRIMESTRE</button>
         <button class="btn-action" style="background:var(--verde)" onclick="openTool('coe')">CALCULADORA C.O.E.</button>
         
-        <p style="font-size: 0.7rem; color: #aaa; margin-top: 20px;">MESA DIRECTIVA MNR<br>Reformismo en Acción</p>
+        <a href="https://www.fcjs.unl.edu.ar/calendario-academico/" target="_blank" class="btn-action" style="background:#6c757d;">📅 CALENDARIO ACADÉMICO</a>
+
+        <p style="font-size: 0.65rem; color: #aaa; margin-top: 20px;">MESA DIRECTIVA MNR<br>Reformismo en Acción </p>
     </div>
 
     <div id="simulador" class="tool-screen">
-        <div class="nav-back" onclick="closeTool()">← VOLVER</div>
-        <input type="text" id="search" placeholder="Buscar materia..." onkeyup="filtrar()" style="width:100%; padding:15px; border-radius:15px; border:1px solid #ccc; margin-bottom:20px;">
+        <div class="nav-back" onclick="closeTool()">← VOLVER AL PORTAL</div>
+        <input type="text" id="search" placeholder="🔍 Buscar materia..." onkeyup="filtrar()" style="width:100%; padding:15px; border-radius:15px; border:1px solid #ccc; margin-bottom:20px; font-size: 1rem;">
         <div id="lista-materias"></div>
     </div>
 
     <div id="coe" class="tool-screen">
-        <div class="nav-back" onclick="closeTool()">← VOLVER</div>
+        <div class="nav-back" onclick="closeTool()">← VOLVER AL PORTAL</div>
         <div class="coe-box">
-            <p><b>¡Desde el MNR te traemos la solución!</b></p>
-            <p style="color:#4db8ff; font-size:0.9rem;">👇 CALCULADORA DE HORAS 👇</p>
+            <p><b>¡Te facilitamos el trámite!</b></p>
+            <p style="color:#4db8ff; font-size:0.8rem;">Elegí tus materias optativas:</p>
             <div id="espacio-optativas"></div>
-            <div style="margin-top:20px; border-top: 1px dashed white; padding-top:20px;">
-                <span>TOTAL HORAS:</span>
-                <div style="font-size:2.5rem; font-weight:900; color:#4db8ff;" id="total-horas-display">0</div>
+            <div style="margin-top:20px; border-top: 1px dashed rgba(255,255,255,0.4); padding-top:20px;">
+                <span style="font-size: 0.8rem; opacity: 0.8;">TOTAL HORAS ACUMULADAS:</span>
+                <div style="font-size:2.8rem; font-weight:900; color:#4db8ff;" id="total-horas-display">0</div>
             </div>
         </div>
         <img src="foto.png" class="img-footer" alt="MNR Estudiantes">
@@ -129,7 +142,9 @@
         const OPTATIVAS = [
             { nombre: "Derecho Procesal III", h: 60 },
             { nombre: "Derecho de Daños", h: 60 },
-            { nombre: "Criminología", h: 45 }
+            { nombre: "Criminología", h: 45 },
+            { nombre: "Taller de Oratoria", h: 30 },
+            { nombre: "Derecho del Consumidor", h: 60 }
         ];
 
         let aprobadas = JSON.parse(localStorage.getItem('aprobadas_fcjs')) || [];
@@ -146,8 +161,8 @@
                             <input type="checkbox" ${esApro ? 'checked' : ''} onclick="event.stopPropagation(); toggleAprobar('${m.id}')">
                         </div>
                         <div class="info-detail" id="detail-${m.id}">
-                            <span class="txt-corr">Necesitás: ${m.corr}</span>
-                            <span class="txt-hab">Habilitás: ${m.hab}</span>
+                            <span class="txt-corr">📚 Necesitás: ${m.corr}</span>
+                            <span class="txt-hab">✅ Habilitás: ${m.hab}</span>
                         </div>
                     </div>`;
             });
@@ -172,7 +187,7 @@
             const cont = document.getElementById('espacio-optativas');
             cont.innerHTML = '';
             for(let i=1; i<=3; i++) {
-                let opts = `<option value="0">Materia ${i}...</option>`;
+                let opts = `<option value="0">Seleccionar materia ${i}...</option>`;
                 OPTATIVAS.forEach(o => opts += `<option value="${o.h}">${o.nombre} (${o.h} hs)</option>`);
                 cont.innerHTML += `<select class="coe-select" onchange="calcCOE()">${opts}</select>`;
             }
@@ -201,8 +216,9 @@
 
         function filtrar() {
             const val = document.getElementById('search').value.toLowerCase();
-            document.querySelectorAll('.materia-card').forEach((card, i) => {
-                card.style.display = materias[i].nombre.toLowerCase().includes(val) ? 'block' : 'none';
+            const cards = document.querySelectorAll('.materia-card');
+            materias.forEach((m, i) => {
+                if(cards[i]) cards[i].style.display = m.nombre.toLowerCase().includes(val) ? 'block' : 'none';
             });
         }
 
