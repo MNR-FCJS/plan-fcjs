@@ -5,108 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FCJS MNR | Portal</title>
     <style>
-        :root { --azul-p: #003366; --azul-c: #1a4b8c; --blanco: #fff; --fondo: #e9eff5; --verde: #28a745; --rojo: #d32f2f; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--fondo); color: #333; overflow-x: hidden; }
+        :root { --azul-p: #003366; --azul-c: #1a4b8c; --blanco: #fff; --fondo: #e9eff5; --verde: #28a745; --naranja: #f39c12; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--fondo); color: #333; }
         
-        /* PUBLICIDAD AL PRINCIPIO */
-        .ads-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .ads-content { position: relative; width: 85%; max-width: 350px; }
-        .ads-content img { width: 100%; border-radius: 20px; border: 2px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: block; }
-        .close-ads {
-            position: absolute; top: -15px; right: -15px;
-            background: var(--rojo); color: white; width: 35px; height: 35px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; cursor: pointer; border: 3px solid white; z-index: 2001;
-        }
-
-        /* Pantalla de Inicio */
+        /* Pantalla de Inicio Estilo App */
         .home-screen { padding: 20px; max-width: 450px; margin: auto; text-align: center; background: white; min-height: 100vh; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .header { margin-top: 20px; margin-bottom: 20px; }
-        .mnr-logo { width: 75px; height: 75px; background: var(--azul-p); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; border: 3px solid #fff; }
+        .mnr-logo { width: 75px; height: 75px; background: var(--azul-p); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
-        .dashboard { background: linear-gradient(135deg, #004080, #0056b3); color: white; padding: 25px; border-radius: 20px; margin-bottom: 20px; text-align: left; }
+        /* Dashboard de Porcentaje */
+        .dashboard { background: linear-gradient(135deg, #004080, #0056b3); color: white; padding: 25px; border-radius: 20px; margin-bottom: 20px; position: relative; text-align: left; }
         .dash-flex { display: flex; justify-content: space-between; align-items: center; }
         .pct-txt { font-size: 3rem; font-weight: 900; }
+        .stats { text-align: right; font-size: 0.9rem; font-weight: bold; }
         .bar-bg { background: rgba(255,255,255,0.2); height: 12px; border-radius: 10px; margin-top: 15px; overflow: hidden; }
         .bar-fill { background: white; height: 100%; width: 0%; transition: 1s ease; }
 
-        .btn-action { background: var(--azul-p); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-bottom: 10px; display: block; }
+        /* Botones de Redes Sociales */
+        .social-row { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-social { flex: 1; padding: 12px; border-radius: 15px; color: white; text-decoration: none; font-size: 0.75rem; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-ig-mnr { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); }
+        .btn-ig-ing { background: linear-gradient(45deg, #f09433, #e66465, #9198e5); }
+
+        /* Botón de Acción Principal */
+        .btn-action { background: var(--azul-p); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
 
         /* Pantallas Secundarias */
         .tool-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--fondo); z-index: 100; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .nav-back { display: inline-block; padding: 10px 20px; background: var(--azul-p); color: white; border-radius: 10px; margin-bottom: 20px; cursor: pointer; font-weight: bold; }
 
-        /* Materias */
-        .materia-card { background: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #ddd; text-align: left; }
+        /* Lista de Materias */
+        .materia-card { background: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #ddd; text-align: left; transition: 0.3s; }
         .materia-card.aprobada { border-left: 6px solid var(--verde); background: #f0fff4; }
-        .info-detail { font-size: 0.85rem; margin-top: 10px; display: none; border-top: 1px solid #eee; padding-top: 10px; }
-        .txt-corr { color: var(--rojo); font-weight: bold; display: block; }
-        .txt-hab { color: var(--verde); font-weight: bold; display: block; }
+        .info-detail { font-size: 0.8rem; margin-top: 10px; display: none; border-top: 1px solid #eee; padding-top: 10px; }
+        .txt-corr { color: #d32f2f; display: block; font-weight: bold; }
+        .txt-hab { color: var(--verde); display: block; font-weight: bold; }
 
-        /* Calculadora COE */
-        #coe { background: var(--azul-p); }
-        .coe-box { background: rgba(255,255,255,0.1); color: white; padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); }
+        /* C.O.E Styling con Imagen PNG */
+        #coe { background: var(--azul-p); } /* Fondo azul para que resalte la imagen */
+        .coe-box { background: rgba(255,255,255,0.1); color: white; padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); position: relative; z-index: 2; }
         .coe-select { width: 100%; padding: 12px; border-radius: 10px; border: none; background: #2c5697; color: white; margin-bottom: 15px; }
         
-        .img-footer { width: 100%; max-width: 320px; margin: 20px auto 0; display: block; border-radius: 15px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); }
+        .img-footer { 
+            width: 100%; 
+            max-width: 300px; 
+            margin: 20px auto 0; 
+            display: block; 
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
     </style>
 </head>
 <body>
-
-    <div id="ads" class="ads-overlay" onclick="closeAds()">
-        <div class="ads-content" onclick="event.stopPropagation()">
-            <div class="close-ads" onclick="closeAds()">X</div>
-            <img src="4to turno.png" alt="Publicidad">
-        </div>
-    </div>
 
     <div id="home" class="home-screen">
         <div class="header">
             <div class="mnr-logo">
                 <svg width="45" height="45" viewBox="0 0 100 100"><text x="50%" y="65%" text-anchor="middle" fill="white" font-family="Arial" font-weight="900" font-size="30">MNR</text></svg>
             </div>
-            <h2 style="margin:0; color: var(--azul-p);">FCJS MNR</h2>
+            <h2 style="margin:0; font-size: 1.2rem; color: var(--azul-p);">FCJS MNR</h2>
         </div>
 
         <div class="dashboard">
             <div class="dash-flex">
                 <div class="pct-txt"><span id="pct-num">0</span>%</div>
-                <div style="text-align:right"><b><span id="count-num">0</span> / 38</b><br>CARRERA</div>
+                <div class="stats"><span id="count-num">0</span> / 38<br>CARRERA</div>
             </div>
             <div class="bar-bg"><div id="bar-fill" class="bar-fill"></div></div>
         </div>
 
-        <button class="btn-action" onclick="openTool('simulador')">ARMÁ TU CUATRIMESTRE</button>
-        <button class="btn-action" style="background:var(--verde)" onclick="openTool('coe')">CALCULADORA C.O.E.</button>
+        <div class="social-row">
+            <a href="https://www.instagram.com/mnrfcjs/" target="_blank" class="btn-social btn-ig-mnr">📸 @mnrfcjs</a>
+            <a href="https://www.instagram.com/ingresofcjs26/" target="_blank" class="btn-social btn-ig-ing">📸 @Ingreso FCJS 2026</a>
+        </div>
+
+        <button class="btn-action" onclick="openTool('simulador')"> ARMÁ TU CUATRIMESTRE</button>
+        <button class="btn-action" style="background:var(--verde)" onclick="openTool('coe')"> CALCULADORA C.O.E.</button>
+        
+        <p style="font-size: 0.7rem; color: #aaa; margin-top: 20px;">MESA DIRECTIVA MNR<br>Reformismo en Acción</p>
     </div>
 
     <div id="simulador" class="tool-screen">
-        <div class="nav-back" onclick="closeTool()">← VOLVER</div>
+        <div class="nav-back" onclick="closeTool()">← VOLVER AL INICIO</div>
         <input type="text" id="search" placeholder="Buscar materia..." onkeyup="filtrar()" style="width:100%; padding:15px; border-radius:15px; border:1px solid #ccc; margin-bottom:20px;">
         <div id="lista-materias"></div>
     </div>
 
     <div id="coe" class="tool-screen">
-        <div class="nav-back" onclick="closeTool()">← VOLVER</div>
+        <div class="nav-back" onclick="closeTool()">← VOLVER AL INICIO</div>
         <div class="coe-box">
-            <p><b>¡Desde el MNR te traemos la solución!</b></p>
-            <p style="color:#4db8ff; font-size:0.9rem;">👇 CALCULADORA DE HORAS 👇</p>
+            <p style="font-weight:bold;">¡Desde los Consejeros Directivos por el MNR te traemos la solución!</p>
+            <p style="color:#4db8ff; font-size:0.9rem;">👇 C.O.E. - CALCULADORA DE OPTATIVAS Y ELECTIVAS 👇</p>
+            
             <div id="espacio-optativas"></div>
-            <div style="margin-top:20px; border-top: 1px dashed white; padding-top:20px;">
-                <span>TOTAL HORAS:</span>
-                <div style="font-size:2.5rem; font-weight:900; color:#4db8ff;" id="total-horas-display">0</div>
+            
+            <div style="margin-top:20px; border-top: 1px dashed rgba(255,255,255,0.3); padding-top:20px;">
+                <span style="font-size:0.8rem; opacity:0.8;">HORAS TOTALES:</span>
+                <div style="font-size:2rem; font-weight:900; color:#4db8ff;" id="total horas">0</div>
             </div>
         </div>
-        <img src="foto.png" class="img-footer" alt="MNR Estudiantes">
+
+        <img src="https://i.postimg.cc/yxDDr4qV/feli.png" class="img-footer" alt="MNR">
     </div>
 
     <script>
-        function closeAds() { document.getElementById('ads').style.display = 'none'; }
-
         const materias = [
             { id: 'itd', nombre: "Teoría del Derecho", corr: "Ninguna", hab: "Fundamentos, Penal I" },
             { id: 'harg', nombre: "Historia Inst. Argentina", corr: "Ninguna", hab: "Ninguna" },
@@ -122,10 +123,10 @@
             { id: 'obli', nombre: "Derecho Obligaciones", corr: "Fundamentos Privado", hab: "Contratos, Daños" }
         ];
 
-        const OPTATIVAS = [
-            { nombre: "Derecho Procesal III", h: 60 },
-            { nombre: "Derecho de Daños", h: 60 },
-            { nombre: "Criminología", h: 45 }
+        const OPTATIVAS_OFICIALES = [
+            { nombre: "Derecho Procesal III", horas: 60 },
+            { nombre: "Derecho de Daños", horas: 60 },
+            { nombre: "Criminología", horas: 45 }
         ];
 
         let aprobadas = JSON.parse(localStorage.getItem('aprobadas_fcjs')) || [];
@@ -138,11 +139,11 @@
                 container.innerHTML += `
                     <div class="materia-card ${esApro ? 'aprobada' : ''}" onclick="toggleExpand('${m.id}')">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-weight:bold;">${m.nombre}</span>
+                            <span style="font-weight:bold; font-size:0.9rem;">${m.nombre}</span>
                             <input type="checkbox" ${esApro ? 'checked' : ''} onclick="event.stopPropagation(); toggleAprobar('${m.id}')">
                         </div>
                         <div class="info-detail" id="detail-${m.id}">
-                            <span class="txt-corr">Correlativas: ${m.corr}</span>
+                            <span class="txt-corr">Necesitás: ${m.corr}</span>
                             <span class="txt-hab">Habilitás: ${m.hab}</span>
                         </div>
                     </div>`;
@@ -168,8 +169,8 @@
             const cont = document.getElementById('espacio-optativas');
             cont.innerHTML = '';
             for(let i=1; i<=3; i++) {
-                let opts = `<option value="0">Materia ${i}...</option>`;
-                OPTATIVAS.forEach(o => opts += `<option value="${o.h}">${o.nombre} (${o.h} hs)</option>`);
+                let opts = `<option value="0">Seleccione Materia ${i}...</option>`;
+                OPTATIVAS_OFICIALES.forEach(o => opts += `<option value="${o.puntos}">${o.nombre} (${o.puntos} cred)</option>`);
                 cont.innerHTML += `<select class="coe-select" onchange="calcCOE()">${opts}</select>`;
             }
         }
@@ -177,7 +178,7 @@
         function calcCOE() {
             let total = 0;
             document.querySelectorAll('.coe-select').forEach(s => total += parseInt(s.value));
-            document.getElementById('total-horas-display').innerText = total;
+            document.getElementById('total-creditos').innerText = total;
         }
 
         function toggleExpand(id) {
@@ -197,8 +198,9 @@
 
         function filtrar() {
             const val = document.getElementById('search').value.toLowerCase();
-            document.querySelectorAll('.materia-card').forEach((card, i) => {
-                card.style.display = materias[i].nombre.toLowerCase().includes(val) ? 'block' : 'none';
+            materias.forEach(m => {
+                const card = document.querySelector(`[onclick="toggleExpand('${m.id}')"]`);
+                if(card) card.style.display = m.nombre.toLowerCase().includes(val) ? 'block' : 'none';
             });
         }
 
