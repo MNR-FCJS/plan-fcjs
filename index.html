@@ -3,160 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FCJS MNR| MNR</title>
+    <title>FCJS MNR | Portal</title>
     <style>
-        :root { --azul-p: #003366; --azul-c: #0056b3; --blanco: #fff; --fondo: #f0f5fa; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; background: var(--fondo); display: flex; justify-content: center; }
-        .container { max-width: 450px; width: 100%; background: var(--blanco); padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e1e8ed; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .mnr-logo { width: 80px; height: 80px; background: var(--azul-p); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: 4px solid var(--blanco); box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: 10px; }
-        h1 { color: var(--azul-p); margin: 0; font-size: 1.6rem; }
-        .sub { color: var(--azul-c); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; }
-        .btn { background: var(--azul-p); color: white; border: none; padding: 16px; width: 100%; border-radius: 15px; font-weight: bold; margin-bottom: 10px; cursor: pointer; transition: 0.2s; font-size: 1rem; }
-        .btn:active { transform: scale(0.98); }
-        .seccion { display: none; margin-top: 15px; background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #e1e8ed; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        #check-list { max-height: 250px; overflow-y: auto; background: #fafafa; border-radius: 12px; padding: 10px; border: 1px solid #eee; }
-        .materia-check { background: white; padding: 10px; margin-bottom: 5px; border-radius: 8px; border: 1px solid #eee; display: flex; align-items: center; font-size: 0.85rem; cursor: pointer; text-align: left; }
-        .materia-check input { margin-right: 12px; width: 18px; height: 18px; }
-        .habilitada { background: #e3f2fd; color: var(--azul-p); padding: 12px; border-radius: 10px; margin-top: 5px; border-left: 5px solid var(--azul-c); font-size: 0.8rem; font-weight: bold; text-align: left; }
-        input[type="text"], textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 10px; font-size: 1rem; }
-        .footer { text-align: center; margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; }
+        :root { --azul-p: #003366; --azul-c: #1a4b8c; --blanco: #fff; --fondo: #e9eff5; --verde: #28a745; --naranja: #f39c12; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--fondo); color: #333; }
+        
+        /* Pantalla de Inicio Estilo App */
+        .home-screen { padding: 20px; max-width: 450px; margin: auto; text-align: center; background: white; min-height: 100vh; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .header { margin-top: 20px; margin-bottom: 20px; }
+        .mnr-logo { width: 75px; height: 75px; background: var(--azul-p); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        /* Dashboard de Porcentaje */
+        .dashboard { background: linear-gradient(135deg, #004080, #0056b3); color: white; padding: 25px; border-radius: 20px; margin-bottom: 20px; position: relative; text-align: left; }
+        .dash-flex { display: flex; justify-content: space-between; align-items: center; }
+        .pct-txt { font-size: 3rem; font-weight: 900; }
+        .stats { text-align: right; font-size: 0.9rem; font-weight: bold; }
+        .bar-bg { background: rgba(255,255,255,0.2); height: 12px; border-radius: 10px; margin-top: 15px; overflow: hidden; }
+        .bar-fill { background: white; height: 100%; width: 0%; transition: 1s ease; }
+
+        /* Botones de Redes Sociales */
+        .social-row { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-social { flex: 1; padding: 12px; border-radius: 15px; color: white; text-decoration: none; font-size: 0.75rem; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-ig-mnr { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); }
+        .btn-ig-ing { background: linear-gradient(45deg, #f09433, #e66465, #9198e5); }
+
+        /* Botón de Acción Principal */
+        .btn-action { background: var(--azul-p); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
+
+        /* Pantallas Secundarias */
+        .tool-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--fondo); z-index: 100; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .nav-back { display: inline-block; padding: 10px 20px; background: var(--azul-p); color: white; border-radius: 10px; margin-bottom: 20px; cursor: pointer; font-weight: bold; }
+
+        /* Lista de Materias */
+        .materia-card { background: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #ddd; text-align: left; transition: 0.3s; }
+        .materia-card.aprobada { border-left: 6px solid var(--verde); background: #f0fff4; }
+        .info-detail { font-size: 0.8rem; margin-top: 10px; display: none; border-top: 1px solid #eee; padding-top: 10px; }
+        .txt-corr { color: #d32f2f; display: block; font-weight: bold; }
+        .txt-hab { color: var(--verde); display: block; font-weight: bold; }
+
+        /* C.O.E Styling con Imagen PNG */
+        #coe { background: var(--azul-p); } /* Fondo azul para que resalte la imagen */
+        .coe-box { background: rgba(255,255,255,0.1); color: white; padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); position: relative; z-index: 2; }
+        .coe-select { width: 100%; padding: 12px; border-radius: 10px; border: none; background: #2c5697; color: white; margin-bottom: 15px; }
+        
+        .img-footer { 
+            width: 100%; 
+            max-width: 300px; 
+            margin: 20px auto 0; 
+            display: block; 
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <div id="home" class="home-screen">
         <div class="header">
             <div class="mnr-logo">
-                <svg width="50" height="50" viewBox="0 0 100 100"><text x="50%" y="65%" text-anchor="middle" fill="white" font-family="Arial" font-weight="900" font-size="32">MNR</text></svg>
+                <svg width="45" height="45" viewBox="0 0 100 100"><text x="50%" y="65%" text-anchor="middle" fill="white" font-family="Arial" font-weight="900" font-size="30">MNR</text></svg>
             </div>
-            <h1> FCJS MNR</h1>
-            <div class="sub">Mesa Directiva</div>
+            <h2 style="margin:0; font-size: 1.2rem; color: var(--azul-p);">FCJS MNR</h2>
         </div>
 
-        <button class="btn" onclick="toggle('buscador')"> BUSCADOR DE MATERIAS</button>
-        <div id="buscador" class="seccion">
-            <input type="text" id="busq" placeholder="Escribí para buscar..." onkeyup="buscar()">
-            <div id="res-busq"></div>
+        <div class="dashboard">
+            <div class="dash-flex">
+                <div class="pct-txt"><span id="pct-num">0</span>%</div>
+                <div class="stats"><span id="count-num">0</span> / 38<br>CARRERA</div>
+            </div>
+            <div class="bar-bg"><div id="bar-fill" class="bar-fill"></div></div>
         </div>
 
-        <button class="btn" style="background:#0056b3;" onclick="toggle('simulador')"> SIMULADOR DE CURSADA</button>
-        <div id="simulador" class="seccion">
-            <p style="font-size:0.8rem; font-weight:bold; color:var(--azul-p);">MARCÁ TUS APROBADAS:</p>
-            <div id="check-list"></div>
-            <p style="margin-top:15px; font-weight:bold; color:var(--azul-c);">ESTÁS HABILITADO PARA:</p>
-            <div id="hab-list"></div>
+        <div class="social-row">
+            <a href="https://www.instagram.com/mnrfcjs/" target="_blank" class="btn-social btn-ig-mnr">📸 @mnrfcjs</a>
+            <a href="https://www.instagram.com/ingresofcjs26/" target="_blank" class="btn-social btn-ig-ing">📸 @Ingreso FCJS 2026</a>
         </div>
 
-        <button class="btn" style="background:#28a745;" onclick="toggle('promedio')"> CALCULAR PROMEDIO</button>
-        <div id="promedio" class="seccion">
-            <textarea id="notasInput" rows="2" placeholder="Pegá tus notas del SIU aquí..."></textarea>
-            <button class="btn" onclick="calcularPromedio()">CALCULAR</button>
-            <div id="resultado-promedio" style="text-align:center; font-size:1.5rem; font-weight:bold; margin-top:10px; color:var(--azul-p);"></div>
+        <button class="btn-action" onclick="openTool('simulador')"> ARMÁ TU CUATRIMESTRE</button>
+        <button class="btn-action" style="background:var(--verde)" onclick="openTool('coe')"> CALCULADORA C.O.E.</button>
+        
+        <p style="font-size: 0.7rem; color: #aaa; margin-top: 20px;">MESA DIRECTIVA MNR<br>Reformismo en Acción</p>
+    </div>
+
+    <div id="simulador" class="tool-screen">
+        <div class="nav-back" onclick="closeTool()">← VOLVER AL INICIO</div>
+        <input type="text" id="search" placeholder="Buscar materia..." onkeyup="filtrar()" style="width:100%; padding:15px; border-radius:15px; border:1px solid #ccc; margin-bottom:20px;">
+        <div id="lista-materias"></div>
+    </div>
+
+    <div id="coe" class="tool-screen">
+        <div class="nav-back" onclick="closeTool()">← VOLVER AL INICIO</div>
+        <div class="coe-box">
+            <p style="font-weight:bold;">¡Desde los Consejeros Directivos por el MNR te traemos la solución!</p>
+            <p style="color:#4db8ff; font-size:0.9rem;">👇 C.O.E. - CALCULADORA DE OPTATIVAS Y ELECTIVAS 👇</p>
+            
+            <div id="espacio-optativas"></div>
+            
+            <div style="margin-top:20px; border-top: 1px dashed rgba(255,255,255,0.3); padding-top:20px;">
+                <span style="font-size:0.8rem; opacity:0.8;">TOTAL CRÉDITOS:</span>
+                <div style="font-size:2rem; font-weight:900; color:#4db8ff;" id="total-creditos">0</div>
+            </div>
         </div>
 
-        <div class="footer">
-            <div style="color:var(--azul-p); font-weight:800; font-size:1rem;">MESA DIRECTIVA MNR</div>
-            <div style="color:var(--azul-c); font-weight:700; font-size:0.8rem;">Reformismo en Acción</div>
-        </div>
+        <img src="https://i.postimg.cc/yxDDr4qV/feli.png" class="img-footer" alt="MNR">
     </div>
 
     <script>
         const materias = [
-            { id: 'itd', nombre: " Teoría del Derecho", anio: "1º Año", corr: null },
-            { id: 'dcon1', nombre: "Derecho Constitucional I", anio: "1º Año", corr: null },
-            { id: 'hcs', nombre: "Historia Constitucional", anio: "1º Año", corr: null },
-            { id: 'socio', nombre: "Sociología", anio: "1º Año", corr: null },
-            { id: 'dpriv', nombre: "Fundamentos del Derecho Privado", anio: "1º Año", corr: 'itd' },
-            { id: 'pgen', nombre: "Derecho Penal I", anio: "1º Año", corr: 'itd' },
-            { id: 'dcon2', nombre: "Derecho Constitucional II", anio: "2º Año", corr: 'dcon1' },
-            { id: 'obli', nombre: "Derecho de las Obligaciones", anio: "2º Año", corr: 'dpriv' },
-            { id: 'eco', nombre: "Economía Política", anio: "2º Año", corr: null },
-            { id: 'cont', nombre: "Derecho de los Contratos", anio: "3º Año", corr: 'obli' },
-            { id: 'pesp', nombre: "Derecho Penal II", anio: "3º Año", corr: 'pgen' },
-            { id: 'proc1', nombre: "Derecho Procesal I", anio: "3º Año", corr: 'obli' },
-            { id: 'da1', nombre: "Derecho Administrativo I", anio: "4º Año", corr: 'dcon2' },
-            { id: 'comercial', nombre: "Derecho Comercial", anio: "4º Año", corr: 'cont' },
-            { id: 'laboral', nombre: "Derecho del Trabajo", anio: "4º Año", corr: 'cont' },
-            { id: 'danios', nombre: "Derecho de Daños", anio: "4º Año", corr: 'obli' },
-            { id: 'proc2', nombre: "Derecho Procesal II", anio: "4º Año", corr: 'proc1' }
+            { id: 'itd', nombre: "Teoría del Derecho", corr: "Ninguna", hab: "Fundamentos, Penal I" },
+            { id: 'harg', nombre: "Historia Inst. Argentina", corr: "Ninguna", hab: "Ninguna" },
+            { id: 'con1', nombre: "Derecho Constitucional I", corr: "Ninguna", hab: "Constitucional II" },
+            { id: 'cpol', nombre: "Ciencias Políticas", corr: "Ninguna", hab: "Ninguna" },
+            { id: 'prob', nombre: "Problemática del Conocimiento", corr: "Ninguna", hab: "Ninguna" },
+            { id: 'eco', nombre: "Economía Política", corr: "Ninguna", hab: "Ninguna" },
+            { id: 'dpriv', nombre: "Fundamentos Privado", corr: "Teoría del Derecho", hab: "Obligaciones, Agrario" },
+            { id: 'socio', nombre: "Sociología y Derecho", corr: "Ninguna", hab: "Ninguna" },
+            { id: 'tproc', nombre: "Teoría Procesal", corr: "Ninguna", hab: "Procesal I, Procesal II" },
+            { id: 'con2', nombre: "Derecho Constitucional II", corr: "Constitucional I", hab: "Finanzas, Consumidores" },
+            { id: 'pgen', nombre: "Derecho Penal I", corr: "Teoría del Derecho", hab: "Penal II" },
+            { id: 'obli', nombre: "Derecho Obligaciones", corr: "Fundamentos Privado", hab: "Contratos, Daños" }
         ];
 
-        window.onload = function() {
-            const lista = document.getElementById('check-list');
-            lista.innerHTML = '';
+        const OPTATIVAS_OFICIALES = [
+            { nombre: "Derecho Procesal III", puntos: 60 },
+            { nombre: "Derecho de Daños", puntos: 60 },
+            { nombre: "Criminología", puntos: 45 }
+        ];
+
+        let aprobadas = JSON.parse(localStorage.getItem('aprobadas_fcjs')) || [];
+
+        function renderSimulador() {
+            const container = document.getElementById('lista-materias');
+            container.innerHTML = '';
             materias.forEach(m => {
-                lista.innerHTML += `
-                    <label class="materia-check">
-                        <input type="checkbox" value="${m.id}" onchange="simular()"> 
-                        <span>${m.nombre} (${m.anio})</span>
-                    </label>`;
-            });
-        };
-
-        function toggle(id) {
-            const el = document.getElementById(id);
-            const seccionYaAbierta = (el.style.display === 'block');
-            
-            // Cerramos todas
-            document.querySelectorAll('.seccion').forEach(s => s.style.display = 'none');
-            
-            // Si no estaba abierta, la abrimos
-            if (!seccionYaAbierta) {
-                el.style.display = 'block';
-            }
-        }
-
-        function buscar() {
-            const txt = document.getElementById('busq').value.toLowerCase();
-            const res = document.getElementById('res-busq');
-            res.innerHTML = '';
-            
-            if(txt.length < 2) return;
-
-            materias.filter(m => m.nombre.toLowerCase().includes(txt)).forEach(m => {
-                const correlativa = m.corr ? materias.find(c => c.id === m.corr) : null;
-                const textoCorr = correlativa ? correlativa.nombre : "Ninguna (Libre)";
-
-                res.innerHTML += `
-                    <div class="habilitada" style="margin-bottom: 8px;">
-                        <strong style="color:var(--azul-p);">${m.nombre}</strong><br>
-                        <small style="color:#666;"> ${m.anio}</small><br>
-                        <small style="color:var(--azul-c); font-weight:bold;">🔗 Correlativa: ${textoCorr}</small>
+                const esApro = aprobadas.includes(m.id);
+                container.innerHTML += `
+                    <div class="materia-card ${esApro ? 'aprobada' : ''}" onclick="toggleExpand('${m.id}')">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-weight:bold; font-size:0.9rem;">${m.nombre}</span>
+                            <input type="checkbox" ${esApro ? 'checked' : ''} onclick="event.stopPropagation(); toggleAprobar('${m.id}')">
+                        </div>
+                        <div class="info-detail" id="detail-${m.id}">
+                            <span class="txt-corr">Necesitás: ${m.corr}</span>
+                            <span class="txt-hab">Habilitás: ${m.hab}</span>
+                        </div>
                     </div>`;
             });
+            actualizarProgreso();
         }
 
-        function simular() {
-            const aprobadas = Array.from(document.querySelectorAll('#check-list input:checked')).map(i => i.value);
-            const habList = document.getElementById('hab-list');
-            habList.innerHTML = '';
-            
-            const habilitadas = materias.filter(m => 
-                !aprobadas.includes(m.id) && 
-                (!m.corr || aprobadas.includes(m.corr))
-            );
+        function toggleAprobar(id) {
+            if(aprobadas.includes(id)) aprobadas = aprobadas.filter(x => x !== id);
+            else aprobadas.push(id);
+            localStorage.setItem('aprobadas_fcjs', JSON.stringify(aprobadas));
+            renderSimulador();
+        }
 
-            if(habilitadas.length === 0) {
-                habList.innerHTML = "<p style='color:#999; font-size:0.8rem;'>Tildá materias aprobadas...</p>";
-            } else {
-                habilitadas.forEach(m => {
-                    habList.innerHTML += `<div class="habilitada">🔹 ${m.nombre}</div>`;
-                });
+        function actualizarProgreso() {
+            const pct = Math.round((aprobadas.length / 38) * 100);
+            document.getElementById('pct-num').innerText = pct;
+            document.getElementById('count-num').innerText = aprobadas.length;
+            document.getElementById('bar-fill').style.width = pct + "%";
+        }
+
+        function generarCOE() {
+            const cont = document.getElementById('espacio-optativas');
+            cont.innerHTML = '';
+            for(let i=1; i<=3; i++) {
+                let opts = `<option value="0">Seleccione Materia ${i}...</option>`;
+                OPTATIVAS_OFICIALES.forEach(o => opts += `<option value="${o.puntos}">${o.nombre} (${o.puntos} cred)</option>`);
+                cont.innerHTML += `<select class="coe-select" onchange="calcCOE()">${opts}</select>`;
             }
         }
 
-        function calcularPromedio() {
-            const raw = document.getElementById('notasInput').value;
-            const notas = raw.match(/\b([1-9]|10)\b/g);
-            const resDiv = document.getElementById('resultado-promedio');
-            if(notas) {
-                const suma = notas.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
-                resDiv.innerHTML = `Promedio: ${(suma / notas.length).toFixed(2)} 🎓`;
-            } else {
-                resDiv.innerHTML = "<span style='font-size:0.8rem; color:red;'>Ingresá notas válidas</span>";
-            }
+        function calcCOE() {
+            let total = 0;
+            document.querySelectorAll('.coe-select').forEach(s => total += parseInt(s.value));
+            document.getElementById('total-creditos').innerText = total;
         }
+
+        function toggleExpand(id) {
+            const el = document.getElementById(`detail-${id}`);
+            if(el) el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function openTool(id) {
+            document.getElementById(id).style.display = 'block';
+            if(id === 'simulador') renderSimulador();
+            if(id === 'coe') generarCOE();
+        }
+
+        function closeTool() {
+            document.querySelectorAll('.tool-screen').forEach(s => s.style.display = 'none');
+        }
+
+        function filtrar() {
+            const val = document.getElementById('search').value.toLowerCase();
+            materias.forEach(m => {
+                const card = document.querySelector(`[onclick="toggleExpand('${m.id}')"]`);
+                if(card) card.style.display = m.nombre.toLowerCase().includes(val) ? 'block' : 'none';
+            });
+        }
+
+        window.onload = actualizarProgreso;
     </script>
 </body>
 </html>
